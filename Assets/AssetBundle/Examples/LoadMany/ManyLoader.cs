@@ -4,9 +4,6 @@ using System.Collections.Generic;
 
 public class ManyLoader : MonoBehaviour {
 	
-	public string testUrl = "http://roboticsnotes.kayac.biz/roboticsnotes/uploads/assets/AssetBundleData/";
-	public string url = "http://noitamina.tv/roboticsnotes/uploads/assets/AssetBundleData/";
-	
 	public GUIText guiText;
 	GameObject car;
 	GameObject girl;
@@ -15,24 +12,14 @@ public class ManyLoader : MonoBehaviour {
 
 	IEnumerator Start () 
 	{
-		SetPath();
 		yield return StartCoroutine(AssetBundleManager.Instance.Download(downloadList));
-		car = InstantiateIndex("Model/MURCIELAGO640", Vector3.one);
-		girl = InstantiateIndex("Model/akiho_test", new Vector3(0.25f, 0.25f, 0.25f));
+		car = InstantiateByName("Model/MURCIELAGO640", Vector3.one);
+		girl = InstantiateByName("Model/akiho_test", new Vector3(0.25f, 0.25f, 0.25f));
 		
 		AssetBundleManager.Instance.FreeAssets(downloadList);
 	}
 	
-	void SetPath()
-	{
-		AssetBundleManager.Instance.androidTestPath = testUrl + "Android/";
-		AssetBundleManager.Instance.androidPath = url + "Android/";
-		
-		AssetBundleManager.Instance.iOSTestPath = testUrl + "IPhone/";
-		AssetBundleManager.Instance.iOSPath = url + "IPhone/";
-	}
-	
-	GameObject InstantiateIndex(string item, Vector3 scale)
+	GameObject InstantiateByName(string item, Vector3 scale)
 	{
 		GameObject go = Instantiate(AssetBundleManager.Instance.GetItem(item)) as GameObject;
 		go.transform.position = Vector3.zero;

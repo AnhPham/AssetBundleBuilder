@@ -9,15 +9,10 @@ public class AssetBundleManager : MonoBehaviour {
 	public bool isUseTestServer = true;
 	public int assetVersion = 1;
 	
-	public string editorPath = string.Empty;
+	private string editorPath = string.Empty;
 	
-	public string webPath = string.Empty;
-	public string androidPath = string.Empty;
-	public string iOSPath = string.Empty;
-	
-	public string webTestPath = string.Empty;
-	public string androidTestPath = string.Empty;
-	public string iOSTestPath = string.Empty;
+	public string domain;
+	public string domainDev;
 	
 	Dictionary<string, AssetBundle> assetBundleList;
 	static AssetBundleManager instance = null;
@@ -121,32 +116,32 @@ public class AssetBundleManager : MonoBehaviour {
 		Downloading = false;
 	}
 	
-	public IEnumerator Download(string s)
+	public IEnumerator Download(string str)
 	{
 		Downloading = true;
 		countLoaded = 0;
 		SetTotal(1);
 		
-		LoadItemsBegin(s);
+		LoadItemsBegin(str);
 		yield return this.downloadWWW;
-		LoadItemsEnd(s);
+		LoadItemsEnd(str);
 		
 		Downloading = false;
 	}
 	
-	public IEnumerator DownloadAbsolutely(string s)
+	public IEnumerator DownloadAbsolutely(string str)
 	{
 		Downloading = true;		
 		countLoaded = 0;
 		SetTotal(1);
 		
 		if (UseAssetBundleCache)
-			downloadWWW = WWW.LoadFromCacheOrDownload(s, assetVersion);
+			downloadWWW = WWW.LoadFromCacheOrDownload(str, assetVersion);
 		else
-			downloadWWW = new WWW(s);
+			downloadWWW = new WWW(str);
 		
 		yield return this.downloadWWW;
-		LoadItemsEnd(s);
+		LoadItemsEnd(str);
 		
 		Downloading = false;
 	}
@@ -182,13 +177,13 @@ public class AssetBundleManager : MonoBehaviour {
 		url = editorPath + str + ".unity3d";
 		
 		#elif UNITY_IPHONE
-		url = isUseTestServer ? iOSTestPath + str + ".unity3d" : iOSPath + str + ".unity3d";
+		url = isUseTestServer ? domainDev + "iOS/" + str + ".unity3d" : domain + "iOS/" + str + ".unity3d";
 
 		#elif UNITY_ANDROID
-		url = isUseTestServer ? androidTestPath + str + ".unity3d" : androidPath + str + ".unity3d";
+		url = isUseTestServer ? domainDev + "Android/" + str + ".unity3d" : domain + "Android/" + str + ".unity3d";
 		
 		#elif UNITY_WEBPLAYER
-		url = isUseTestServer ? webTestPath + str + ".unity3d" : webPath + str + ".unity3d";
+		url = isUseTestServer ? domainDev + "Web/" + str + ".unity3d" : domain + "Web/" + str + ".unity3d";
 		#endif
 		
 		Debug.Log("[Asset Bundle]Full Path: " + url);

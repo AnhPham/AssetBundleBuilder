@@ -10,7 +10,7 @@ public class AssetBundleBasicBuilder : Editor {
 
 	private string webFolderPath = "Assets/AssetBundleData/Web/";
 	private string androidFolderPath = "Assets/AssetBundleData/Android/";
-	private string iPhoneFolderPath = "Assets/AssetBundleData/IPhone/";
+	private string iPhoneFolderPath = "Assets/AssetBundleData/iOS/";
 	
 	public void Build(string path, BuildTarget buildTarget)
 	{		
@@ -39,22 +39,27 @@ public class AssetBundleBasicBuilder : Editor {
 	public void BuildWeb()
 	{
 		Build(webFolderPath, BuildTarget.WebPlayer);
+		AssetDatabase.Refresh();
 	}
 
 	public void BuildAndroid()
 	{
 		Build(androidFolderPath, BuildTarget.Android);
+		AssetDatabase.Refresh();
 	}
 
 	public void BuildiPhone()
 	{
 		Build(iPhoneFolderPath, BuildTarget.iPhone);
+		AssetDatabase.Refresh();
 	}
 	
 	public void BuildAll()
 	{
 		BuildWeb();
 		BuildAndroid();
-		BuildiPhone();
+		
+		if (Application.platform == RuntimePlatform.OSXEditor)
+			BuildiPhone();
 	}
 }

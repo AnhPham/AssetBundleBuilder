@@ -15,7 +15,9 @@ public class AssetBundleBasicEditor : Editor
 		EditorGUILayout.BeginHorizontal();
 		if (GUILayout.Button("Build Web")) gen.BuildWeb();
 		if (GUILayout.Button("Build Android")) gen.BuildAndroid();
-		if (GUILayout.Button("Build iPhone")) gen.BuildiPhone();
+		
+		if (Application.platform == RuntimePlatform.OSXEditor)
+			if (GUILayout.Button("Build iOS")) gen.BuildiPhone();
 
 		EditorGUILayout.EndHorizontal();
 		

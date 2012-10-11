@@ -11,12 +11,12 @@ public class GirlLoader : MonoBehaviour {
 	IEnumerator Start () 
 	{
 		yield return StartCoroutine(AssetBundleManager.Instance.DownloadAbsolutely(url));
-		girl = InstantiateIndex(0, new Vector3(0.25f, 0.25f, 0.25f));
+		girl = InstantiateByName(0, new Vector3(0.25f, 0.25f, 0.25f));
 		
 		AssetBundleManager.Instance.FreeAsset(url);
 	}
 	
-	GameObject InstantiateIndex(int i, Vector3 scale)
+	GameObject InstantiateByName(int i, Vector3 scale)
 	{
 		GameObject go = Instantiate(AssetBundleManager.Instance.GetItem(url)) as GameObject;
 		go.transform.position = Vector3.zero;
