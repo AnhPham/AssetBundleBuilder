@@ -4,6 +4,7 @@ using System.Collections;
 
 public class AssetBundleCollectionBuilder : Editor {
 	
+	public Object mainAsset;
 	public Object[] folders;
 	
 	public string collectionPath = "Collection/";
@@ -15,7 +16,7 @@ public class AssetBundleCollectionBuilder : Editor {
 	public void Build(string path, BuildTarget buildTarget)
 	{		
 		System.IO.Directory.CreateDirectory(path);
-		BuildPipeLine(path, collectionPath, null, folders, buildTarget);
+		BuildPipeLine(path, collectionPath, mainAsset, folders, buildTarget);
 	}
 	
 	private void BuildPipeLine(string path, string childPath, Object main, Object[] objs, BuildTarget buildTarget)

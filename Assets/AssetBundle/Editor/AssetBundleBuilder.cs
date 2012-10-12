@@ -7,12 +7,12 @@ public class AssetBundleBuilder : Editor {
 	public TextAsset[] textDataObjects;
 	public Object[] modelObjects;
 	public AudioClip[] soundObjects;
-	public Texture2D[] imageObjects;
+	public Object[] objects;
 	
 	public string dataPath = "Data/";
 	public string modelPath = "Model/";
 	public string soundPath = "Sound/";
-	public string imagePath = "Image/";
+	public string objectPath = "Object/";
 
 	private string webFolderPath = "Assets/AssetBundleData/Web/";
 	private string androidFolderPath = "Assets/AssetBundleData/Android/";
@@ -24,7 +24,7 @@ public class AssetBundleBuilder : Editor {
 		BuildPipeLine(path, dataPath, textDataObjects, buildTarget);
 		BuildPipeLine(path, modelPath, modelObjects, buildTarget);
 		BuildPipeLine(path, soundPath, soundObjects, buildTarget);
-		BuildPipeLine(path, imagePath, imageObjects, buildTarget);
+		BuildPipeLine(path, objectPath, objects, buildTarget);
 	}
 	
 	private void BuildPipeLine(string path, string childPath, Object[] objs, BuildTarget buildTarget)
