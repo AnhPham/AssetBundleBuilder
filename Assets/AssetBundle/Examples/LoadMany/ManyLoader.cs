@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class ManyLoader : MonoBehaviour {
 	
-	public GUIText guiText;
+	public GUIText gText;
 	GameObject car;
 	GameObject girl;
 	
@@ -12,16 +12,16 @@ public class ManyLoader : MonoBehaviour {
 
 	IEnumerator Start () 
 	{
-		yield return StartCoroutine(AssetBundleManager.Instance.Download(downloadList));
+		yield return StartCoroutine(ABManager.Instance.Download(downloadList));
 		car = InstantiateByName("Model/MURCIELAGO640", Vector3.one);
 		girl = InstantiateByName("Model/akiho_test", new Vector3(0.25f, 0.25f, 0.25f));
 		
-		AssetBundleManager.Instance.FreeAssets(downloadList);
+		ABManager.Instance.FreeAssets(downloadList);
 	}
 	
 	GameObject InstantiateByName(string item, Vector3 scale)
 	{
-		GameObject go = Instantiate(AssetBundleManager.Instance.GetItem(item)) as GameObject;
+		GameObject go = Instantiate(ABManager.Instance.GetItem(item)) as GameObject;
 		go.transform.position = Vector3.zero;
 		go.transform.localScale = scale;
 		return go;
@@ -29,9 +29,9 @@ public class ManyLoader : MonoBehaviour {
 	
 	void Update () 
 	{
-		if (AssetBundleManager.Instance.Downloading)
+		if (ABManager.Instance.Downloading)
 		{
-			guiText.text = "Download Progress: " + AssetBundleManager.Instance.GetStringProgress();
+			gText.text = "Download Progress: " + ABManager.Instance.GetStringProgress();
 		}
 		
 		if (car != null) 

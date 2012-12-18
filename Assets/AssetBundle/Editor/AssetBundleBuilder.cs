@@ -7,16 +7,16 @@ public class AssetBundleBuilder : Editor {
 	public TextAsset[] textDataObjects;
 	public Object[] modelObjects;
 	public AudioClip[] soundObjects;
-	public Object[] objects;
+	public Texture2D[] imageObjects;
 	
 	public string dataPath = "Data/";
 	public string modelPath = "Model/";
 	public string soundPath = "Sound/";
-	public string objectPath = "Object/";
+	public string imagePath = "Image/";
 
-	private string webFolderPath = "Assets/AssetBundleData/Web/";
-	private string androidFolderPath = "Assets/AssetBundleData/Android/";
-	private string iPhoneFolderPath = "Assets/AssetBundleData/iOS/";
+	private string webFolderPath = "AssetBundleData/Web/";
+	private string androidFolderPath = "AssetBundleData/Android/";
+	private string iPhoneFolderPath = "AssetBundleData/iOS/";
 	
 	public void Build(string path, BuildTarget buildTarget)
 	{		
@@ -24,7 +24,7 @@ public class AssetBundleBuilder : Editor {
 		BuildPipeLine(path, dataPath, textDataObjects, buildTarget);
 		BuildPipeLine(path, modelPath, modelObjects, buildTarget);
 		BuildPipeLine(path, soundPath, soundObjects, buildTarget);
-		BuildPipeLine(path, objectPath, objects, buildTarget);
+		BuildPipeLine(path, imagePath, imageObjects, buildTarget);
 	}
 	
 	private void BuildPipeLine(string path, string childPath, Object[] objs, BuildTarget buildTarget)
@@ -32,8 +32,13 @@ public class AssetBundleBuilder : Editor {
 		string fullPath = path + childPath;
 		System.IO.Directory.CreateDirectory(fullPath);
 		var options = BuildAssetBundleOptions.CollectDependencies | BuildAssetBundleOptions.CompleteAssets;
+		
+		BuildPipeline.PushAssetDependencies();
+	
 		foreach (Object obj in objs)
 			BuildPipeline.BuildAssetBundle(obj, null, fullPath + obj.name + ".unity3d", options, buildTarget);	
+	
+		BuildPipeline.PopAssetDependencies();	
 	}
 
 	public void BuildWeb()

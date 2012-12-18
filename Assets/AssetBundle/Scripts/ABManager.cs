@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class AssetBundleManager : MonoBehaviour {
+public class ABManager : MonoBehaviour {
 	
 	public static bool UseAssetBundleCache = true;
 	
@@ -15,7 +15,7 @@ public class AssetBundleManager : MonoBehaviour {
 	public string domainDev;
 	
 	Dictionary<string, AssetBundle> assetBundleList;
-	static AssetBundleManager instance = null;
+	static ABManager instance = null;
 	AssetBundle assetBundle;
 	WWW downloadWWW;	
 	string url = string.Empty;
@@ -31,19 +31,22 @@ public class AssetBundleManager : MonoBehaviour {
 
 	protected void Init()
 	{
-		editorPath = "file://" + Application.dataPath + "/AssetBundleData/Android/";
-		//Debug.Log(editorPath);
+		string appPath = Application.dataPath;
+		int index = appPath.LastIndexOf("/Assets");
+		appPath = appPath.Substring(0, index);
+		editorPath = "file://" + appPath + "/AssetBundleData/Android/";
+		Debug.Log(editorPath);
 		assetBundleList = new Dictionary<string, AssetBundle>();
 	}
 
-	public static AssetBundleManager Instance
+	public static ABManager Instance
 	{
 		get 
 		{ 
 			if (instance == null) {
-				GameObject go = new GameObject("AssetBundleManager");
+				GameObject go = new GameObject("ABManager");
 				DontDestroyOnLoad(go);
-				AssetBundleManager abm = go.AddComponent<AssetBundleManager>();
+				ABManager abm = go.AddComponent<ABManager>();
 				instance = abm;
 			}
 			return instance; 
@@ -72,6 +75,11 @@ public class AssetBundleManager : MonoBehaviour {
 		float p = GetProgress();
 		if (p >= 1) return "100%";
 		return p.ToString("P");
+	}
+	
+	public bool ContainsItem(string item)
+	{
+		return assetBundleList.ContainsKey(item);
 	}
 	
 	public Object GetItem(string item)
@@ -148,8 +156,12 @@ public class AssetBundleManager : MonoBehaviour {
 	
 	public void FreeAllAssets()
 	{
+		List<string> items = new List<string>();
 		foreach (KeyValuePair<string, AssetBundle> obj in assetBundleList)
-			FreeAsset(obj.Key);	
+			items.Add(obj.Key);
+		
+		foreach (string item in items)
+			FreeAsset(item);
 	}
 	
 	public void FreeAsset(string item)
@@ -175,6 +187,7 @@ public class AssetBundleManager : MonoBehaviour {
 	{
 		#if UNITY_EDITOR
 		url = editorPath + str + ".unity3d";
+		//url = isUseTestServer ? domainDev + "iOS/" + str + ".unity3d" : domain + "iOS/" + str + ".unity3d";
 		
 		#elif UNITY_IPHONE
 		url = isUseTestServer ? domainDev + "iOS/" + str + ".unity3d" : domain + "iOS/" + str + ".unity3d";

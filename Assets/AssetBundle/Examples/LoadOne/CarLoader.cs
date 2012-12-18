@@ -4,20 +4,20 @@ using System.Collections.Generic;
 
 public class CarLoader : MonoBehaviour {
 	
-	public GUIText guiText;
+	public GUIText gText;
 	GameObject car;
 
 	IEnumerator Start () 
 	{
-		yield return StartCoroutine(AssetBundleManager.Instance.Download("Model/MURCIELAGO640"));
+		yield return StartCoroutine(ABManager.Instance.Download("Model/MURCIELAGO640"));
 		car = InstantiateByName("Model/MURCIELAGO640", Vector3.one);
 		
-		AssetBundleManager.Instance.FreeAsset("Model/MURCIELAGO640");
+		ABManager.Instance.FreeAsset("Model/MURCIELAGO640");
 	}
 	
 	GameObject InstantiateByName(string item, Vector3 scale)
 	{
-		GameObject go = Instantiate(AssetBundleManager.Instance.GetItem(item)) as GameObject;
+		GameObject go = Instantiate(ABManager.Instance.GetItem(item)) as GameObject;
 		go.transform.position = Vector3.zero;
 		go.transform.localScale = scale;
 		return go;
@@ -25,9 +25,9 @@ public class CarLoader : MonoBehaviour {
 	
 	void Update () 
 	{
-		if (AssetBundleManager.Instance.Downloading)
+		if (ABManager.Instance.Downloading)
 		{
-			guiText.text = "Download Progress: " + AssetBundleManager.Instance.GetStringProgress();
+			gText.text = "Download Progress: " + ABManager.Instance.GetStringProgress();
 		}
 		
 		if (car != null) 

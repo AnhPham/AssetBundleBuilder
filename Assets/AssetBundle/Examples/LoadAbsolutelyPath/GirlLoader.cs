@@ -5,20 +5,20 @@ using System.Collections.Generic;
 public class GirlLoader : MonoBehaviour {
 	
 	private string url = "http://roboticsnotes.kayac.biz/roboticsnotes/uploads/assets/AssetBundleData/Android/Model/akiho_test.unity3d";
-	public GUIText guiText;
+	public GUIText gText;
 	GameObject girl;
 
 	IEnumerator Start () 
 	{
-		yield return StartCoroutine(AssetBundleManager.Instance.DownloadAbsolutely(url));
+		yield return StartCoroutine(ABManager.Instance.DownloadAbsolutely(url));
 		girl = InstantiateByName(0, new Vector3(0.25f, 0.25f, 0.25f));
 		
-		AssetBundleManager.Instance.FreeAsset(url);
+		ABManager.Instance.FreeAsset(url);
 	}
 	
 	GameObject InstantiateByName(int i, Vector3 scale)
 	{
-		GameObject go = Instantiate(AssetBundleManager.Instance.GetItem(url)) as GameObject;
+		GameObject go = Instantiate(ABManager.Instance.GetItem(url)) as GameObject;
 		go.transform.position = Vector3.zero;
 		go.transform.localScale = scale;
 		return go;
@@ -26,9 +26,9 @@ public class GirlLoader : MonoBehaviour {
 	
 	void Update () 
 	{
-		if (AssetBundleManager.Instance.Downloading)
+		if (ABManager.Instance.Downloading)
 		{
-			guiText.text = "Download Progress: " + AssetBundleManager.Instance.GetStringProgress();
+			gText.text = "Download Progress: " + ABManager.Instance.GetStringProgress();
 		}
 		
 		if (girl != null) 

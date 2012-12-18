@@ -8,9 +8,9 @@ public class AssetBundleBasicBuilder : Editor {
 	
 	public string assetBundlePath = "Single/";
 
-	private string webFolderPath = "Assets/AssetBundleData/Web/";
-	private string androidFolderPath = "Assets/AssetBundleData/Android/";
-	private string iPhoneFolderPath = "Assets/AssetBundleData/iOS/";
+	private string webFolderPath = "AssetBundleData/Web/";
+	private string androidFolderPath = "AssetBundleData/Android/";
+	private string iPhoneFolderPath = "AssetBundleData/iOS/";
 	
 	public void Build(string path, BuildTarget buildTarget)
 	{		
@@ -33,7 +33,12 @@ public class AssetBundleBasicBuilder : Editor {
 		string fullPath = path + childPath;
 		System.IO.Directory.CreateDirectory(fullPath);
 		var options = BuildAssetBundleOptions.CollectDependencies | BuildAssetBundleOptions.CompleteAssets;
+		
+		BuildPipeline.PushAssetDependencies();
+	
 		BuildPipeline.BuildAssetBundle(obj, null, fullPath + obj.name + ".unity3d", options, buildTarget);	
+	
+		BuildPipeline.PopAssetDependencies();	
 	}
 
 	public void BuildWeb()
